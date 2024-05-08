@@ -71,6 +71,7 @@
             // 
             // pOrigImage
             // 
+            pOrigImage.BorderStyle = BorderStyle.FixedSingle;
             pOrigImage.Location = new Point(39, 42);
             pOrigImage.Name = "pOrigImage";
             pOrigImage.Size = new Size(512, 512);
@@ -78,6 +79,7 @@
             // 
             // pWaveImage
             // 
+            pWaveImage.BorderStyle = BorderStyle.FixedSingle;
             pWaveImage.Location = new Point(590, 42);
             pWaveImage.Name = "pWaveImage";
             pWaveImage.Size = new Size(512, 512);
@@ -91,6 +93,7 @@
             bLoadImage.TabIndex = 2;
             bLoadImage.Text = "Load";
             bLoadImage.UseVisualStyleBackColor = true;
+            bLoadImage.Click += bLoadImage_Click;
             // 
             // bError
             // 

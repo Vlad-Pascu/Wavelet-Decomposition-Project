@@ -310,6 +310,7 @@
             bRefresh.TabIndex = 26;
             bRefresh.Text = "Refresh Wavelet Image";
             bRefresh.UseVisualStyleBackColor = true;
+            bRefresh.Click += bRefresh_Click;
             // 
             // lScale
             // 
@@ -384,6 +385,7 @@
             tbScale.Name = "tbScale";
             tbScale.Size = new Size(81, 32);
             tbScale.TabIndex = 33;
+            tbScale.TextChanged += tbScale_TextChanged;
             // 
             // tbOffset
             // 
@@ -392,6 +394,7 @@
             tbOffset.Name = "tbOffset";
             tbOffset.Size = new Size(81, 32);
             tbOffset.TabIndex = 34;
+            tbOffset.TextChanged += tbOffset_TextChanged;
             // 
             // tbX
             // 

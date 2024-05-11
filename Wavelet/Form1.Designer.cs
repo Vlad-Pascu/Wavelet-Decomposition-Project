@@ -58,7 +58,7 @@
             lScale = new Label();
             lOffset = new Label();
             lX = new Label();
-            label3 = new Label();
+            lY = new Label();
             lMinError = new Label();
             lMaxError = new Label();
             tbScale = new TextBox();
@@ -67,6 +67,7 @@
             tbY = new TextBox();
             tbMinError = new TextBox();
             tbMaxError = new TextBox();
+            lStatus = new Label();
             SuspendLayout();
             // 
             // pOrigImage
@@ -130,6 +131,7 @@
             bAnH1.TabIndex = 6;
             bAnH1.Text = "AnH1";
             bAnH1.UseVisualStyleBackColor = true;
+            bAnH1.Click += bAnH1_Click;
             // 
             // bAnV1
             // 
@@ -139,6 +141,7 @@
             bAnV1.TabIndex = 7;
             bAnV1.Text = "AnV1";
             bAnV1.UseVisualStyleBackColor = true;
+            bAnV1.Click += bAnV1_Click;
             // 
             // bAnH2
             // 
@@ -148,6 +151,7 @@
             bAnH2.TabIndex = 8;
             bAnH2.Text = "AnH2";
             bAnH2.UseVisualStyleBackColor = true;
+            bAnH2.Click += bAnH2_Click;
             // 
             // bAnV2
             // 
@@ -157,6 +161,7 @@
             bAnV2.TabIndex = 9;
             bAnV2.Text = "AnV2";
             bAnV2.UseVisualStyleBackColor = true;
+            bAnV2.Click += bAnV2_Click;
             // 
             // bAnH3
             // 
@@ -166,6 +171,7 @@
             bAnH3.TabIndex = 10;
             bAnH3.Text = "AnH3";
             bAnH3.UseVisualStyleBackColor = true;
+            bAnH3.Click += bAnH3_Click;
             // 
             // bAnV5
             // 
@@ -175,6 +181,7 @@
             bAnV5.TabIndex = 15;
             bAnV5.Text = "AnV5";
             bAnV5.UseVisualStyleBackColor = true;
+            bAnV5.Click += bAnV5_Click;
             // 
             // bAnH5
             // 
@@ -184,6 +191,7 @@
             bAnH5.TabIndex = 14;
             bAnH5.Text = "AnH5";
             bAnH5.UseVisualStyleBackColor = true;
+            bAnH5.Click += bAnH5_Click;
             // 
             // bAnV4
             // 
@@ -193,6 +201,7 @@
             bAnV4.TabIndex = 13;
             bAnV4.Text = "AnV4";
             bAnV4.UseVisualStyleBackColor = true;
+            bAnV4.Click += bAnV4_Click;
             // 
             // bAnH4
             // 
@@ -202,6 +211,7 @@
             bAnH4.TabIndex = 12;
             bAnH4.Text = "AnH4";
             bAnH4.UseVisualStyleBackColor = true;
+            bAnH4.Click += bAnH4_Click;
             // 
             // bAnV3
             // 
@@ -211,6 +221,7 @@
             bAnV3.TabIndex = 11;
             bAnV3.Text = "AnV3";
             bAnV3.UseVisualStyleBackColor = true;
+            bAnV3.Click += bAnV3_Click;
             // 
             // bSyV5
             // 
@@ -345,16 +356,16 @@
             lX.Text = "x";
             lX.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // label3
+            // lY
             // 
-            label3.AutoSize = true;
-            label3.Font = new Font("Times New Roman", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.Location = new Point(908, 694);
-            label3.Name = "label3";
-            label3.Size = new Size(19, 23);
-            label3.TabIndex = 30;
-            label3.Text = "y";
-            label3.TextAlign = ContentAlignment.MiddleCenter;
+            lY.AutoSize = true;
+            lY.Font = new Font("Times New Roman", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lY.Location = new Point(908, 694);
+            lY.Name = "lY";
+            lY.Size = new Size(19, 23);
+            lY.TabIndex = 30;
+            lY.Text = "y";
+            lY.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lMinError
             // 
@@ -385,6 +396,7 @@
             tbScale.Name = "tbScale";
             tbScale.Size = new Size(81, 32);
             tbScale.TabIndex = 33;
+            tbScale.Text = "1";
             tbScale.TextChanged += tbScale_TextChanged;
             // 
             // tbOffset
@@ -394,6 +406,7 @@
             tbOffset.Name = "tbOffset";
             tbOffset.Size = new Size(81, 32);
             tbOffset.TabIndex = 34;
+            tbOffset.Text = "128";
             tbOffset.TextChanged += tbOffset_TextChanged;
             // 
             // tbX
@@ -403,6 +416,8 @@
             tbX.Name = "tbX";
             tbX.Size = new Size(81, 32);
             tbX.TabIndex = 35;
+            tbX.Text = "512";
+            tbX.TextChanged += tbX_TextChanged;
             // 
             // tbY
             // 
@@ -411,6 +426,8 @@
             tbY.Name = "tbY";
             tbY.Size = new Size(81, 32);
             tbY.TabIndex = 36;
+            tbY.Text = "512";
+            tbY.TextChanged += tbY_TextChanged;
             // 
             // tbMinError
             // 
@@ -428,11 +445,22 @@
             tbMaxError.Size = new Size(81, 32);
             tbMaxError.TabIndex = 38;
             // 
+            // lStatus
+            // 
+            lStatus.AutoSize = true;
+            lStatus.Font = new Font("Times New Roman", 27.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lStatus.Location = new Point(1129, 666);
+            lStatus.Name = "lStatus";
+            lStatus.Size = new Size(0, 42);
+            lStatus.TabIndex = 39;
+            lStatus.TextAlign = ContentAlignment.MiddleCenter;
+            // 
             // fWavelet
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1384, 761);
+            ClientSize = new Size(1584, 761);
+            Controls.Add(lStatus);
             Controls.Add(tbMaxError);
             Controls.Add(tbMinError);
             Controls.Add(tbY);
@@ -441,7 +469,7 @@
             Controls.Add(tbScale);
             Controls.Add(lMaxError);
             Controls.Add(lMinError);
-            Controls.Add(label3);
+            Controls.Add(lY);
             Controls.Add(lX);
             Controls.Add(lOffset);
             Controls.Add(lScale);
@@ -510,7 +538,7 @@
         private Label lScale;
         private Label lOffset;
         private Label lX;
-        private Label label3;
+        private Label lY;
         private Label lMinError;
         private Label lMaxError;
         private TextBox tbScale;
@@ -519,5 +547,6 @@
         private TextBox tbY;
         private TextBox tbMinError;
         private TextBox tbMaxError;
+        private Label lStatus;
     }
 }

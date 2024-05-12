@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Diagnostics;
 using System.Windows.Forms;
 
@@ -67,10 +68,10 @@ namespace Wavelet
         private void bLoadImage_Click(object sender, EventArgs e)
         {
             LoadImageOnPanel();
-            scale=Convert.ToDouble(tbScale.Text);
-            offset=Convert.ToInt32(tbOffset.Text);
-            limitX=Convert.ToInt32(tbX.Text);
-            limitY=Convert.ToInt32(tbY.Text);
+            scale = Convert.ToDouble(tbScale.Text);
+            offset = Convert.ToInt32(tbOffset.Text);
+            limitX = Convert.ToInt32(tbX.Text);
+            limitY = Convert.ToInt32(tbY.Text);
         }
 
         private void LoadImageOnPanel()
@@ -113,7 +114,7 @@ namespace Wavelet
                 for (int x = 0; x < bmp.Width; x++)
                 {
                     int colorPart;
-                    if(x<limitX && y < limitY)
+                    if (x < limitX && y < limitY)
                         colorPart = (int)(wavelet[x, y]);
                     else
                         colorPart = (int)(wavelet[x, y] * scale + offset);
@@ -251,14 +252,103 @@ namespace Wavelet
                 wavelet[l, column] = newVector[l];
                 //Debug.WriteLine(newVector[i]);
             }
+        }
 
+        private void SynthesisH(int line, int length)
+        {
+            double[] originalVector = new double[length];
+            for (int c = 0; c < length; c++)
+                originalVector[c] = wavelet[line, c];
+            double[] upSampleL = new double[length];
+            double[] upSampleH = new double[length];
+            for (int i = 0; i < length; i += 2)
+                upSampleL[i] = originalVector[i / 2];
+            for (int i = 1; i < length; i += 2)
+                upSampleH[i] = originalVector[(length + i) / 2];
+            double[] low = new double[length];
+            double[] high = new double[length];
+            double[] newVector = new double[length];
+            for (int i = 0; i < length; i++)
+            {
+                high[i] = getValue(upSampleH, i - 4) * synthesisH[0] +
+                    getValue(upSampleH, i - 3) * synthesisH[1] +
+                    getValue(upSampleH, i - 2) * synthesisH[2] +
+                    getValue(upSampleH, i - 1) * synthesisH[3] +
+                    getValue(upSampleH, i) * synthesisH[4] +
+                    getValue(upSampleH, i + 1) * synthesisH[5] +
+                    getValue(upSampleH, i + 2) * synthesisH[6] +
+                    getValue(upSampleH, i + 3) * synthesisH[7] +
+                    getValue(upSampleH, i + 4) * synthesisH[8];
+                low[i] = getValue(upSampleL, i - 4) * synthesisL[0] +
+                    getValue(upSampleL, i - 3) * synthesisL[1] +
+                    getValue(upSampleL, i - 2) * synthesisL[2] +
+                    getValue(upSampleL, i - 1) * synthesisL[3] +
+                    getValue(upSampleL, i) * synthesisL[4] +
+                    getValue(upSampleL, i + 1) * synthesisL[5] +
+                    getValue(upSampleL, i + 2) * synthesisL[6] +
+                    getValue(upSampleL, i + 3) * synthesisL[7] +
+                    getValue(upSampleL, i + 4) * synthesisL[8];
+                //Debug.WriteLine(low[i] + " " + high[i]);
+            }
+            for (int i = 0; i < length; i++)
+                newVector[i] = low[i] + high[i];
+            for (int c = 0; c < length; c++)
+            {
+                wavelet[line, c] = Math.Round(newVector[c]);
+                //Debug.WriteLine(wavelet[line,c]);
+            }
+        }
+
+        private void SynthesisV(int column, int length)
+        {
+            double[] originalVector = new double[length];
+            for (int l = 0; l < length; l++)
+                originalVector[l] = wavelet[l, column];
+            double[] upSampleL = new double[length];
+            double[] upSampleH = new double[length];
+            for (int i = 0; i < length; i += 2)
+                upSampleL[i] = originalVector[i / 2];
+            for (int i = 1; i < length; i += 2)
+                upSampleH[i] = originalVector[(length + i) / 2];
+            double[] low = new double[length];
+            double[] high = new double[length];
+            double[] newVector = new double[length];
+            for (int i = 0; i < length; i++)
+            {
+                high[i] = getValue(upSampleH, i - 4) * synthesisH[0] +
+                    getValue(upSampleH, i - 3) * synthesisH[1] +
+                    getValue(upSampleH, i - 2) * synthesisH[2] +
+                    getValue(upSampleH, i - 1) * synthesisH[3] +
+                    getValue(upSampleH, i) * synthesisH[4] +
+                    getValue(upSampleH, i + 1) * synthesisH[5] +
+                    getValue(upSampleH, i + 2) * synthesisH[6] +
+                    getValue(upSampleH, i + 3) * synthesisH[7] +
+                    getValue(upSampleH, i + 4) * synthesisH[8];
+                low[i] = getValue(upSampleL, i - 4) * synthesisL[0] +
+                    getValue(upSampleL, i - 3) * synthesisL[1] +
+                    getValue(upSampleL, i - 2) * synthesisL[2] +
+                    getValue(upSampleL, i - 1) * synthesisL[3] +
+                    getValue(upSampleL, i) * synthesisL[4] +
+                    getValue(upSampleL, i + 1) * synthesisL[5] +
+                    getValue(upSampleL, i + 2) * synthesisL[6] +
+                    getValue(upSampleL, i + 3) * synthesisL[7] +
+                    getValue(upSampleL, i + 4) * synthesisL[8];
+                //Debug.WriteLine(low[i] + " " + high[i]);
+            }
+            for (int i = 0; i < length; i++)
+                newVector[i] = low[i] + high[i];
+            for (int l = 0; l < length; l++)
+            {
+                wavelet[l, column] = Math.Round(newVector[l]);
+                //Debug.WriteLine(wavelet[l, column]);
+            }
         }
 
         private void bAnH1_Click(object sender, EventArgs e)
         {
             for (int l = 0; l < 512; l++)
                 AnalysisH(l, 512);
-            lStatus.Text = "Stage 1 Horizontal Complete";
+            lStatus.Text = "Stage 1 Horizontal Analysis";
             tbY.Text = "256";
         }
 
@@ -266,7 +356,7 @@ namespace Wavelet
         {
             for (int c = 0; c < 512; c++)
                 AnalysisV(c, 512);
-            lStatus.Text = "Stage 1 Vertical Complete";
+            lStatus.Text = "Stage 1 Vertical Analysis";
             tbX.Text = "256";
         }
 
@@ -274,7 +364,7 @@ namespace Wavelet
         {
             for (int l = 0; l < 256; l++)
                 AnalysisH(l, 256);
-            lStatus.Text = "Stage 2 Horizontal Complete";
+            lStatus.Text = "Stage 2 Horizontal Analysis";
             tbY.Text = "128";
         }
 
@@ -282,7 +372,7 @@ namespace Wavelet
         {
             for (int c = 0; c < 256; c++)
                 AnalysisV(c, 256);
-            lStatus.Text = "Stage 2 Vertical Complete";
+            lStatus.Text = "Stage 2 Vertical Analysis";
             tbX.Text = "128";
         }
 
@@ -290,7 +380,7 @@ namespace Wavelet
         {
             for (int l = 0; l < 128; l++)
                 AnalysisH(l, 128);
-            lStatus.Text = "Stage 3 Horizontal Complete";
+            lStatus.Text = "Stage 3 Horizontal Analysis";
             tbY.Text = "64";
         }
 
@@ -298,7 +388,7 @@ namespace Wavelet
         {
             for (int c = 0; c < 128; c++)
                 AnalysisV(c, 128);
-            lStatus.Text = "Stage 3 Vertical Complete";
+            lStatus.Text = "Stage 3 Vertical Analysis";
             tbX.Text = "64";
         }
 
@@ -306,7 +396,7 @@ namespace Wavelet
         {
             for (int l = 0; l < 64; l++)
                 AnalysisH(l, 64);
-            lStatus.Text = "Stage 4 Horizontal Complete";
+            lStatus.Text = "Stage 4 Horizontal Analysis";
             tbY.Text = "32";
         }
 
@@ -314,7 +404,7 @@ namespace Wavelet
         {
             for (int c = 0; c < 64; c++)
                 AnalysisV(c, 64);
-            lStatus.Text = "Stage 4 Vertical Complete";
+            lStatus.Text = "Stage 4 Vertical Analysis";
             tbX.Text = "32";
         }
 
@@ -322,7 +412,7 @@ namespace Wavelet
         {
             for (int l = 0; l < 32; l++)
                 AnalysisH(l, 32);
-            lStatus.Text = "Stage 5 Horizontal Complete";
+            lStatus.Text = "Stage 5 Horizontal Analysis";
             tbY.Text = "16";
         }
 
@@ -330,8 +420,88 @@ namespace Wavelet
         {
             for (int c = 0; c < 32; c++)
                 AnalysisV(c, 32);
-            lStatus.Text = "Stage 5 Vertical Complete";
+            lStatus.Text = "Stage 5 Vertical Analysis";
             tbX.Text = "16";
+        }
+
+        private void bSyH1_Click(object sender, EventArgs e)
+        {
+            for (int l = 0; l < 512; l++)
+                SynthesisH(l, 512);
+            lStatus.Text = "Stage 1 Horizontal Synthesis";
+            tbY.Text = "512";
+        }
+
+        private void bSyV1_Click(object sender, EventArgs e)
+        {
+            for (int c = 0; c < 512; c++)
+                SynthesisV(c, 512);
+            lStatus.Text = "Stage 1 Vertical Synthesis";
+            tbX.Text = "512";
+        }
+
+        private void bSyH2_Click(object sender, EventArgs e)
+        {
+            for (int l = 0; l < 256; l++)
+                SynthesisH(l, 256);
+            lStatus.Text = "Stage 2 Horizontal Synthesis";
+            tbY.Text = "256";
+        }
+
+        private void bSyV2_Click(object sender, EventArgs e)
+        {
+            for (int c = 0; c < 256; c++)
+                SynthesisV(c, 256);
+            lStatus.Text = "Stage 2 Vertical Synthesis";
+            tbX.Text = "256";
+        }
+
+        private void bSyH3_Click(object sender, EventArgs e)
+        {
+            for (int l = 0; l < 128; l++)
+                SynthesisH(l, 128);
+            lStatus.Text = "Stage 3 Horizontal Synthesis";
+            tbY.Text = "128";
+        }
+
+        private void bSyV3_Click(object sender, EventArgs e)
+        {
+            for (int c = 0; c < 128; c++)
+                SynthesisV(c, 128);
+            lStatus.Text = "Stage 3 Vertical Synthesis";
+            tbX.Text = "128";
+        }
+
+        private void bSyH4_Click(object sender, EventArgs e)
+        {
+            for (int l = 0; l < 64; l++)
+                SynthesisH(l, 64);
+            lStatus.Text = "Stage 4 Horizontal Synthesis";
+            tbY.Text = "64";
+        }
+
+        private void bSyV4_Click(object sender, EventArgs e)
+        {
+            for (int c = 0; c < 64; c++)
+                SynthesisV(c, 64);
+            lStatus.Text = "Stage 4 Vertical Synthesis";
+            tbX.Text = "64";
+        }
+
+        private void bSyH5_Click(object sender, EventArgs e)
+        {
+            for (int l = 0; l < 32; l++)
+                SynthesisH(l, 32);
+            lStatus.Text = "Stage 5 Horizontal Synthesis";
+            tbY.Text = "32";
+        }
+
+        private void bSyV5_Click(object sender, EventArgs e)
+        {
+            for (int c = 0; c < 32; c++)
+                SynthesisV(c, 32);
+            lStatus.Text = "Stage 5 Vertical Synthesis";
+            tbX.Text = "32";
         }
 
         private void tbX_TextChanged(object sender, EventArgs e)
@@ -348,6 +518,24 @@ namespace Wavelet
                 limitY = 512;
             else
                 limitY = Convert.ToInt32(tbY.Text);
+        }
+
+        private void bError_Click(object sender, EventArgs e)
+        {
+            double min = 512.00, max = -100.00;
+            for (int i = 0; i < 512; i++)
+            {
+                for (int j = 0; j < 512; j++)
+                {
+                    double error = Math.Abs(original[i, j] - wavelet[i, j]);
+                    if (error < min)
+                        min = error;
+                    if (error > max)
+                        max = error;
+                }
+            }
+            tbMaxError.Text= max.ToString();
+            tbMinError.Text= min.ToString();
         }
     }
 }

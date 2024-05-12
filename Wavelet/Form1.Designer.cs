@@ -104,6 +104,7 @@
             bError.TabIndex = 3;
             bError.Text = "MinMaxError";
             bError.UseVisualStyleBackColor = true;
+            bError.Click += bError_Click;
             // 
             // bSave
             // 
@@ -231,6 +232,7 @@
             bSyV5.TabIndex = 25;
             bSyV5.Text = "SyV5";
             bSyV5.UseVisualStyleBackColor = true;
+            bSyV5.Click += bSyV5_Click;
             // 
             // bSyH5
             // 
@@ -240,6 +242,7 @@
             bSyH5.TabIndex = 24;
             bSyH5.Text = "SyH5";
             bSyH5.UseVisualStyleBackColor = true;
+            bSyH5.Click += bSyH5_Click;
             // 
             // bSyV4
             // 
@@ -249,6 +252,7 @@
             bSyV4.TabIndex = 23;
             bSyV4.Text = "SyV4";
             bSyV4.UseVisualStyleBackColor = true;
+            bSyV4.Click += bSyV4_Click;
             // 
             // bSyH4
             // 
@@ -258,6 +262,7 @@
             bSyH4.TabIndex = 22;
             bSyH4.Text = "SyH4";
             bSyH4.UseVisualStyleBackColor = true;
+            bSyH4.Click += bSyH4_Click;
             // 
             // bSyV3
             // 
@@ -267,6 +272,7 @@
             bSyV3.TabIndex = 21;
             bSyV3.Text = "SyV3";
             bSyV3.UseVisualStyleBackColor = true;
+            bSyV3.Click += bSyV3_Click;
             // 
             // bSyH3
             // 
@@ -276,6 +282,7 @@
             bSyH3.TabIndex = 20;
             bSyH3.Text = "SyH3";
             bSyH3.UseVisualStyleBackColor = true;
+            bSyH3.Click += bSyH3_Click;
             // 
             // bSyV2
             // 
@@ -285,6 +292,7 @@
             bSyV2.TabIndex = 19;
             bSyV2.Text = "SyV2";
             bSyV2.UseVisualStyleBackColor = true;
+            bSyV2.Click += bSyV2_Click;
             // 
             // bSyH2
             // 
@@ -294,6 +302,7 @@
             bSyH2.TabIndex = 18;
             bSyH2.Text = "SyH2";
             bSyH2.UseVisualStyleBackColor = true;
+            bSyH2.Click += bSyH2_Click;
             // 
             // bSyV1
             // 
@@ -303,6 +312,7 @@
             bSyV1.TabIndex = 17;
             bSyV1.Text = "SyV1";
             bSyV1.UseVisualStyleBackColor = true;
+            bSyV1.Click += bSyV1_Click;
             // 
             // bSyH1
             // 
@@ -312,6 +322,7 @@
             bSyH1.TabIndex = 16;
             bSyH1.Text = "SyH1";
             bSyH1.UseVisualStyleBackColor = true;
+            bSyH1.Click += bSyH1_Click;
             // 
             // bRefresh
             // 
@@ -434,7 +445,7 @@
             tbMinError.Font = new Font("Times New Roman", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbMinError.Location = new Point(269, 634);
             tbMinError.Name = "tbMinError";
-            tbMinError.Size = new Size(81, 32);
+            tbMinError.Size = new Size(119, 32);
             tbMinError.TabIndex = 37;
             // 
             // tbMaxError
@@ -442,7 +453,7 @@
             tbMaxError.Font = new Font("Times New Roman", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             tbMaxError.Location = new Point(269, 679);
             tbMaxError.Name = "tbMaxError";
-            tbMaxError.Size = new Size(81, 32);
+            tbMaxError.Size = new Size(119, 32);
             tbMaxError.TabIndex = 38;
             // 
             // lStatus

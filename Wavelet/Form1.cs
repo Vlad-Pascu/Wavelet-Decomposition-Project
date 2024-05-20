@@ -8,6 +8,7 @@ namespace Wavelet
     {
         byte[,] original = new byte[512, 512];
         double[,] wavelet = new double[512, 512];
+        string fileName;
         readonly double[] analysisL = new double[]
         {
             0.026748757411,
@@ -82,6 +83,8 @@ namespace Wavelet
             {
                 string filePath = ofd.FileName;
                 Bitmap bmp = new Bitmap(filePath);
+                fileName = ofd.FileName;
+                Debug.WriteLine(fileName);
                 int width = bmp.Width;
                 int height = bmp.Height;
                 Bitmap panelImage = new Bitmap(width, height);
@@ -339,7 +342,8 @@ namespace Wavelet
                 newVector[i] = low[i] + high[i];
             for (int l = 0; l < length; l++)
             {
-                wavelet[l, column] = Math.Round(newVector[l]);
+                //wavelet[l, column] = Math.Round(newVector[l]);
+                wavelet[l, column] = newVector[l];
                 //Debug.WriteLine(wavelet[l, column]);
             }
         }
@@ -527,15 +531,65 @@ namespace Wavelet
             {
                 for (int j = 0; j < 512; j++)
                 {
-                    double error = Math.Abs(original[i, j] - wavelet[i, j]);
+                    double error = Math.Abs(original[i, j] - Math.Round(wavelet[i, j]));
                     if (error < min)
                         min = error;
                     if (error > max)
                         max = error;
                 }
             }
-            tbMaxError.Text= max.ToString();
-            tbMinError.Text= min.ToString();
+            tbMaxError.Text = max.ToString();
+            tbMinError.Text = min.ToString();
+        }
+
+        private void bSave_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "Wavelet files (*.wvl)|";
+            saveFile.RestoreDirectory = true;
+            if (saveFile.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = saveFile.FileName;
+
+                StreamWriter writer = new StreamWriter(filePath);
+                for (int y = 0; y < 512; y++)
+                {
+                    for (int x = 0; x < 512; x++)
+                        writer.WriteLine(wavelet[x, y].ToString("F6") + " ");
+                }
+                Debug.WriteLine("File saved successfully.");
+                writer.Close();
+
+            }
+            else
+                Debug.WriteLine("Could not save");
+        }
+
+        private void bLoadWavelet_Click(object sender, EventArgs e)
+        {
+            StreamReader reader = null;
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Filter = "Wavelet (*.wvl)|";
+            if (openFile.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = openFile.FileName;
+                fileName = openFile.FileName;
+                Debug.WriteLine(fileName);
+                reader = new StreamReader(fileName);
+                Color color = new Color();
+                for (int y = 0; y < 512; y++)
+                {
+                    for (int x = 0; x < 512; x++)
+                    {
+                        wavelet[x, y] = double.Parse(reader.ReadLine());
+                    }
+                }
+                Debug.WriteLine("Wavelet Loaded");
+            }
+            else
+            {
+                Debug.WriteLine("Could not load wavelet");
+            }
         }
     }
 }

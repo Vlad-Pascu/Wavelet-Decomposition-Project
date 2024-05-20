@@ -114,6 +114,7 @@
             bSave.TabIndex = 4;
             bSave.Text = "Save";
             bSave.UseVisualStyleBackColor = true;
+            bSave.Click += bSave_Click;
             // 
             // bLoadWavelet
             // 
@@ -123,6 +124,7 @@
             bLoadWavelet.TabIndex = 5;
             bLoadWavelet.Text = "Load";
             bLoadWavelet.UseVisualStyleBackColor = true;
+            bLoadWavelet.Click += bLoadWavelet_Click;
             // 
             // bAnH1
             // 
